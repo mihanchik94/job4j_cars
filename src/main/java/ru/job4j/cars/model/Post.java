@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @Entity
@@ -20,5 +22,10 @@ public class Post {
     private Timestamp created;
     private int userId;
 
-
+    @ManyToMany
+    @JoinTable(name = "participates",
+            joinColumns = {@JoinColumn(name = "post_id")},
+            inverseJoinColumns = {@JoinColumn(name = "user_id")}
+    )
+    private Set<User> participates = new HashSet<>();
 }
