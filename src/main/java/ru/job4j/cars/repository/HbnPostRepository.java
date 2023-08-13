@@ -23,7 +23,7 @@ public class HbnPostRepository implements PostRepository {
 
     @Override
     public List<Post> findPostsOnlyWithPicture() {
-        return crudRepository.query("from Post p join fetch p.photos where p.photos is not null", Post.class);
+        return crudRepository.query("from Post p join fetch p.photos where p.photos is not empty", Post.class);
     }
 
     @Override
