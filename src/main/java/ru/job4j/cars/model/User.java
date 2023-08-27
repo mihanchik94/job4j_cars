@@ -1,6 +1,8 @@
 package ru.job4j.cars.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
@@ -8,6 +10,8 @@ import javax.persistence.*;
 @Data
 @Entity
 @Table(name = "auto_user")
+@AllArgsConstructor
+@NoArgsConstructor
 @ToString
 public class User {
     @Id

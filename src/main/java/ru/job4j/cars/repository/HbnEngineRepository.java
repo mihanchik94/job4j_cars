@@ -32,6 +32,12 @@ public class HbnEngineRepository implements EngineRepository {
     }
 
     @Override
+    public void delete(int id) {
+        crudRepository.run("delete from Engine where id = :fId",
+                Map.of("fId", id));
+    }
+
+    @Override
     public Optional<Engine> findById(int id) {
         return crudRepository.optional("from Engine e where e.id = :fId", Engine.class,
                 Map.of("fId", id));

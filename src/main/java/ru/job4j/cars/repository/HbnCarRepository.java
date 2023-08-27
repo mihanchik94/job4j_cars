@@ -32,6 +32,12 @@ public class HbnCarRepository  implements CarRepository {
     }
 
     @Override
+    public void delete(int id) {
+        crudRepository.run("delete Car where id = :fId",
+                Map.of("fId", id));
+    }
+
+    @Override
     public Optional<Car> findById(int id) {
         return crudRepository.optional("from Car c where c.id = :fId", Car.class,
                 Map.of("fId", id));

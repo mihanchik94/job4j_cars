@@ -12,7 +12,7 @@ import java.util.Optional;
 @ThreadSafe
 @Repository
 @AllArgsConstructor
-public class HbnOwnerRepository  implements OwnerRepository {
+public class HbnOwnerRepository implements OwnerRepository {
     private final CrudRepository crudRepository;
 
     @Override
@@ -27,8 +27,19 @@ public class HbnOwnerRepository  implements OwnerRepository {
     }
 
     @Override
-    public Optional<Owner> findById(int id) {
-        return crudRepository.optional("from Owner o where o.id = fId", Owner.class,
+    public void delete(int id) {
+        crudRepository.run("delete from Owner where id = :fId",
                 Map.of("fId", id));
+    }
+
+    @Override
+    public Optional<Owner> findById(int id) {
+        return crudRepository.optional("from Owner o where o.id = :fId", Owner.class,
+                Map.of("fId", id));
+    }
+
+    @Override
+    public List<Owner> findAll() {
+        return crudRepository.query("from Owner", Owner.class);
     }
 }

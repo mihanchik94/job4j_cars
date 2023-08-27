@@ -8,5 +8,7 @@ import java.util.Optional;
 public interface OwnerRepository {
     List<Owner> findByName(String name);
     void save(Owner owner);
+    void delete(int id);
     Optional<Owner> findById(int id);
+    List<Owner> findAll();
 }

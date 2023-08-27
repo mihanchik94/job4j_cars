@@ -11,5 +11,6 @@ public interface EngineRepository {
     List<Engine> findAll();
     List<Engine> findByName(String name);
     void save(Engine engine);
+    void delete(int id);
     Optional<Engine> findById(int id);
 }

@@ -9,5 +9,6 @@ public interface CarRepository {
     List<Car> findAll();
     List<Car> findByName(String name);
     void save(Car car);
+    void delete(int id);
     Optional<Car> findById(int id);
 }
