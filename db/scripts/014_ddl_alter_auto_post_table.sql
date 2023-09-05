@@ -1,0 +1,1 @@
+ALTER TABLE auto_post add column body_id int REFERENCES bodies(id)
