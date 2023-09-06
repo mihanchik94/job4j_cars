@@ -35,7 +35,7 @@ class HbnPostRepositoryTest {
         sf = new MetadataSources().buildMetadata(registry).buildSessionFactory();
         CrudRepository crudRepository = new CrudRepository(sf);
         postRepository = new HbnPostRepository(crudRepository);
-        userRepository = new UserRepository(crudRepository);
+        userRepository = new HbnUserRepository(crudRepository);
         fileRepository = new HbnFileRepository(crudRepository);
         carRepository = new HbnCarRepository(crudRepository);
     }

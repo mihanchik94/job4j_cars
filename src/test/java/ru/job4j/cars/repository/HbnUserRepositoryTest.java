@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.*;
 import java.util.List;
 import java.util.Optional;
 
-class UserRepositoryTest {
+class HbnUserRepositoryTest {
     private static StandardServiceRegistry registry;
     private static SessionFactory sf;
     private static UserRepository userRepository;
@@ -24,7 +24,7 @@ class UserRepositoryTest {
     public static void initRepository() {
         registry = new StandardServiceRegistryBuilder().configure().build();
         sf = new MetadataSources().buildMetadata(registry).buildSessionFactory();
-        userRepository = new UserRepository(new CrudRepository(sf));
+        userRepository = new HbnUserRepository(new CrudRepository(sf));
     }
 
     @AfterEach

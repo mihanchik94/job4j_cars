@@ -27,7 +27,7 @@ class HbnOwnerRepositoryTest {
     public static void initRepository() {
         registry = new StandardServiceRegistryBuilder().configure().build();
         sf = new MetadataSources().buildMetadata(registry).buildSessionFactory();
-        userRepository = new UserRepository(new CrudRepository(sf));
+        userRepository = new HbnUserRepository(new CrudRepository(sf));
         ownerRepository = new HbnOwnerRepository(new CrudRepository(sf));
     }
 

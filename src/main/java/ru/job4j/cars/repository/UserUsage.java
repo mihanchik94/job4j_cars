@@ -12,7 +12,7 @@ public class UserUsage {
                 .configure().build();
         try (SessionFactory sf = new MetadataSources(registry)
                 .buildMetadata().buildSessionFactory()) {
-            UserRepository userRepository = new UserRepository(new CrudRepository(sf));
+            UserRepository userRepository = new HbnUserRepository(new CrudRepository(sf));
             User user = new User();
             user.setLogin("admin");
             user.setPassword("admin");

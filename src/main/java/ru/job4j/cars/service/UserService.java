@@ -1,11 +1,11 @@
-package ru.job4j.cars.repository;
+package ru.job4j.cars.service;
 
 import ru.job4j.cars.model.User;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface UserRepository {
+public interface UserService {
     Optional<User> create(User user);
     void update(User user);
     void delete(int id);
