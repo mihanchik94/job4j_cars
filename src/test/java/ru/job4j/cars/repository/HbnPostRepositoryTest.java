@@ -185,8 +185,8 @@ class HbnPostRepositoryTest {
             userRepository.create(user1);
             userRepository.create(user2);
 
-           car1.setName("Audi");
-           car2.setName("BMW");
+           car1.setBrand("Audi");
+           car2.setBrand("BMW");
 
            carRepository.save(car1);
            carRepository.save(car2);

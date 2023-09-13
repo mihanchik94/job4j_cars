@@ -22,7 +22,7 @@ public class HbnEngineRepository implements EngineRepository {
 
     @Override
     public List<Engine> findByName(String name) {
-        return crudRepository.query("from Engine e where e.name = :fName", Engine.class,
+        return crudRepository.query("from Engine e where e.size = :fName", Engine.class,
                 Map.of("fName", name));
     }
 

@@ -37,9 +37,9 @@ public class HbnPostRepository implements PostRepository {
     }
 
     @Override
-    public List<Post> findPostsByName(String carName) {
-        return crudRepository.query("from Post p join fetch p.car where p.car.name = :fCarName", Post.class,
-                Map.of("fCarName", carName));
+    public List<Post> findPostsByName(String carBrand) {
+        return crudRepository.query("from Post p join fetch p.car where p.car.brand = :fCarBrand", Post.class,
+                Map.of("fCarBrand", carBrand));
     }
 
     @Override

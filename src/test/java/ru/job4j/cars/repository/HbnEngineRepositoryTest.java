@@ -43,9 +43,9 @@ class HbnEngineRepositoryTest {
     @Test
     void whenFindAllThenGetList() {
         Engine engine1 = new Engine();
-        engine1.setName("R4");
+        engine1.setSize("2.4");
         Engine engine2 = new Engine();
-        engine2.setName("V12");
+        engine2.setSize("3.6");
         engineRepository.save(engine1);
         engineRepository.save(engine2);
 
@@ -55,7 +55,7 @@ class HbnEngineRepositoryTest {
     @Test
     void whenSaveEngineThenRepositoryHasTheSameEngine() {
         Engine engine = new Engine();
-        engine.setName("R4");
+        engine.setSize("2.4");
         engineRepository.save(engine);
         Engine result = engineRepository.findById(engine.getId()).get();
         assertThat(result).isEqualTo(engine);
@@ -64,15 +64,15 @@ class HbnEngineRepositoryTest {
     @Test
     void whenFindByNameThenGetEngine() {
         Engine engine = new Engine();
-        engine.setName("R4");
+        engine.setSize("2.4");
         engineRepository.save(engine);
-        assertThat(engineRepository.findByName("R4")).isEqualTo(List.of(engine));
+        assertThat(engineRepository.findByName("2.4")).isEqualTo(List.of(engine));
     }
 
     @Test
     void whenDeleteThenEmptyOptional() {
         Engine engine = new Engine();
-        engine.setName("R4");
+        engine.setSize("2.4");
         engineRepository.save(engine);
         int id = engine.getId();
         engineRepository.delete(id);

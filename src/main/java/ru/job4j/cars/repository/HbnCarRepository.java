@@ -21,9 +21,9 @@ public class HbnCarRepository  implements CarRepository {
     }
 
     @Override
-    public List<Car> findByName(String name) {
-        return crudRepository.query("from Car c where c.name = :fName", Car.class,
-                Map.of("fName", name));
+    public List<Car> findByName(String brand) {
+        return crudRepository.query("from Car c where c.brand = :fName", Car.class,
+                Map.of("fName", brand));
     }
 
     @Override

@@ -20,23 +20,17 @@ public class Post {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String description;
+    private int price;
     private LocalDateTime created = LocalDateTime.now().withNano(0);
     @Column(name = "auto_user_id")
     private int userId;
-
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "participates",
-            joinColumns = {@JoinColumn(name = "post_id")},
-            inverseJoinColumns = {@JoinColumn(name = "auto_user_id")}
-    )
-    private Set<User> participates = new HashSet<>();
 
     @OneToOne
     @JoinColumn(name = "car_id")
     private Car car;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "post_id")
+    @JoinColumn(name = "file_id")
     private Set<File> photos = new HashSet<>();
 
     @Override
@@ -61,6 +55,7 @@ public class Post {
         return "Post{"
                 + "id=" + id
                 + ", description='" + description
+                + ", price='" + price
                 + ", created=" + created
                 + '}';
     }

@@ -43,9 +43,9 @@ class HbnCarRepositoryTest {
     @Test
     void whenFindAllThenGetList() {
         Car car1 = new Car();
-        car1.setName("Voyah");
+        car1.setBrand("Voyah");
         Car car2 = new Car();
-        car2.setName("Jaguar");
+        car2.setBrand("Jaguar");
         carRepository.save(car1);
         carRepository.save(car2);
 
@@ -55,7 +55,7 @@ class HbnCarRepositoryTest {
     @Test
     void whenFindByNameThenGetCar() {
         Car car = new Car();
-        car.setName("Voyah");
+        car.setBrand("Voyah");
         carRepository.save(car);
         assertThat(carRepository.findByName("Voyah")).isEqualTo(List.of(car));
     }
@@ -63,7 +63,7 @@ class HbnCarRepositoryTest {
     @Test
     void whenSaveCarThenRepositoryHasTheSameCar() {
         Car car = new Car();
-        car.setName("Voyah");
+        car.setBrand("Voyah");
         carRepository.save(car);
         Car result = carRepository.findById(car.getId()).get();
         assertThat(result).isEqualTo(car);
@@ -72,7 +72,7 @@ class HbnCarRepositoryTest {
     @Test
     void whenDeleteThenEmptyOptional() {
         Car car = new Car();
-        car.setName("Voyah");
+        car.setBrand("Voyah");
         carRepository.save(car);
         int id = car.getId();
         carRepository.delete(id);

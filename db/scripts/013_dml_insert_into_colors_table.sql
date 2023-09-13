@@ -1,0 +1,15 @@
+insert into fuel_types (name) values('Черный');
+insert into fuel_types (name) values('Белый');
+insert into fuel_types (name) values('Серебристый');
+insert into fuel_types (name) values('Серый');
+insert into fuel_types (name) values('Коричневый');
+insert into fuel_types (name) values('Бежевый');
+insert into fuel_types (name) values('Синий');
+insert into fuel_types (name) values('Зеленый');
+insert into fuel_types (name) values('Желтый');
+insert into fuel_types (name) values('Красный');
+insert into fuel_types (name) values('Голубой');
+insert into fuel_types (name) values('Фиолетовый');
+insert into fuel_types (name) values('Оранжевый');
+insert into fuel_types (name) values('Розовый');
+insert into fuel_types (name) values('Золотой');

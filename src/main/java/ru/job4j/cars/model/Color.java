@@ -1,23 +1,21 @@
 package ru.job4j.cars.model;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.Setter;
 
 import javax.persistence.*;
 
-@Data
 @Entity
-@Table(name = "auto_user")
-@AllArgsConstructor
+@Table(name = "colors")
 @NoArgsConstructor
-@ToString
-public class User {
+@AllArgsConstructor
+@Getter
+@Setter
+public class Color {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String login;
-    private String password;
-    private String phoneNumber;
+    private String name;
 }
