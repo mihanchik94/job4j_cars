@@ -8,6 +8,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import ru.job4j.cars.model.File;
+import ru.job4j.cars.model.Post;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,16 +19,23 @@ class HbnFileRepositoryTest {
     private static StandardServiceRegistry registry;
     private static SessionFactory sf;
     private static FileRepository fileRepository;
+    private static PostRepository postRepository;
 
     @BeforeAll
     static void initRepositories() {
         registry = new StandardServiceRegistryBuilder().configure().build();
         sf = new MetadataSources().buildMetadata(registry).buildSessionFactory();
+        postRepository = new HbnPostRepository(new CrudRepository(sf));
         fileRepository = new HbnFileRepository(new CrudRepository(sf));
     }
 
     @AfterEach
     void deleteModels() {
+        List<Post> posts = postRepository.findAll();
+        for (Post post : posts) {
+            postRepository.delete(post.getId());
+        }
+
         List<File> files = fileRepository.findAll();
         for (File file : files) {
             fileRepository.deleteById(file.getId());

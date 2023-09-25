@@ -19,7 +19,7 @@
     <include file="scripts/012_ddl_create_colors_table.sql" relativeToChangelogFile="true"/>
     <include file="scripts/013_dml_insert_into_colors_table.sql" relativeToChangelogFile="true"/>
     <include file="scripts/014_ddl_create_cars_table.sql" relativeToChangelogFile="true"/>
-    <include file="scripts/015_ddl_create_files_table.sql" relativeToChangelogFile="true"/>
-    <include file="scripts/016_ddl_create_auto_post_table.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/015_ddl_create_auto_post_table.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/016_ddl_create_files_table.sql" relativeToChangelogFile="true"/>
     <include file="scripts/017_ddl_create_price_history_table.sql" relativeToChangelogFile="true"/>
 </databaseChangeLog>

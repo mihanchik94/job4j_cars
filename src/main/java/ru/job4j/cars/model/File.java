@@ -15,9 +15,16 @@ public class File {
     private int id;
     private String name;
     private String path;
+    private int postId;
 
     public File(String name, String path) {
         this.name = name;
         this.path = path;
+    }
+
+    public File(String name, String path, int postId) {
+        this.name = name;
+        this.path = path;
+        this.postId = postId;
     }
 }

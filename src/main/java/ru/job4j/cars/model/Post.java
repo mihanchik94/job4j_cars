@@ -30,7 +30,7 @@ public class Post {
     private Car car;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "file_id")
+    @JoinColumn(name = "post_id")
     private Set<File> photos = new HashSet<>();
 
     @Override
