@@ -1,9 +1,6 @@
 package ru.job4j.cars.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -13,9 +10,10 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class DriveType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    public String name;
+    private String name;
 }
