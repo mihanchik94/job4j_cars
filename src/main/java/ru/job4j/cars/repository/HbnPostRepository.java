@@ -8,6 +8,7 @@ import ru.job4j.cars.model.Post;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @ThreadSafe
 @Repository
@@ -40,6 +41,12 @@ public class HbnPostRepository implements PostRepository {
     public List<Post> findPostsByName(String carBrand) {
         return crudRepository.query("from Post p join fetch p.car where p.car.brand = :fCarBrand", Post.class,
                 Map.of("fCarBrand", carBrand));
+    }
+
+    @Override
+    public Optional<Post> findPostById(int id) {
+        return crudRepository.optional("from Post where id = :fId", Post.class,
+                Map.of("fId", id));
     }
 
     @Override

@@ -15,6 +15,7 @@ import ru.job4j.cars.model.User;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.*;
@@ -163,6 +164,14 @@ class HbnPostRepositoryTest {
         postRepository.save(post2);
 
         assertThat(postRepository.findPostsOnlyWithPicture()).isEqualTo(List.of(post1));
+    }
+
+    @Test
+    void whenFindPostByIdThenGetOptionalPost() {
+        Post post1 = new Post();
+        postRepository.save(post1);
+
+        assertThat(postRepository.findPostById(post1.getId())).isEqualTo(Optional.of(post1));
     }
 
         @Test

@@ -6,6 +6,7 @@ import ru.job4j.cars.model.Post;
 import ru.job4j.cars.repository.PostRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -35,6 +36,11 @@ public class SimplePostService implements PostService {
     @Override
     public List<Post> findPostsByName(String carName) {
         return postRepository.findPostsByName(carName);
+    }
+
+    @Override
+    public Optional<Post> findPostById(int id) {
+        return postRepository.findPostById(id);
     }
 
     @Override
