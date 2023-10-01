@@ -20,7 +20,7 @@ public class Car {
     private String model;
     @Column(name = "car_year")
     private int year;
-    private long vin;
+    private long mileage;
 
     @ManyToOne
     @JoinColumn(name = "engine_id", foreignKey = @ForeignKey(name = "ENGINE_ID_FK"))

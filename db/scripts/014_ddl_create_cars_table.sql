@@ -4,7 +4,6 @@ create table cars (
 	model varchar not null,
 	car_year int not null,
 	mileage bigint not null,
-	vin varchar,
 	engine_id int references engines(id),
 	body_id int references bodies(id),
 	gear_box_id int references gear_boxes(id),

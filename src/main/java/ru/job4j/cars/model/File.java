@@ -4,9 +4,10 @@ import lombok.*;
 
 import javax.persistence.*;
 
-@Data
 @Entity
 @Table(name = "files")
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class File {
@@ -15,6 +16,7 @@ public class File {
     private int id;
     private String name;
     private String path;
+    @Column(name = "post_id")
     private int postId;
 
     public File(String name, String path) {

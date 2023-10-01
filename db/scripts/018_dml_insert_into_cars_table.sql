@@ -1,0 +1,1 @@
+insert into cars (brand, model, car_year, mileage, engine_id, body_id, gear_box_id, fuel_type_id, drive_type_id, color_id) values ('Mini', 'Countryman', 2021, 24919, 7, 5, 2, 1, 1, 1)
