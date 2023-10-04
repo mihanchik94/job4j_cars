@@ -90,4 +90,17 @@ public class HbnUserRepository implements UserRepository{
         return crudRepository.optional("from User u where u.login = :fLogin", User.class,
                 Map.of("fLogin", login));
     }
+
+    /**
+     * Найти пользователя по login и password.
+     * @param login login.
+     * @param password password.
+     * @return Optional or user.
+     */
+    @Override
+    public Optional<User> findByLoginAndPassword(String login, String password) {
+        return crudRepository.optional("from User u where u.login = :fLogin and u.password = :fPassword", User.class,
+                Map.of("fLogin", login,
+                        "fPassword", password));
+    }
 }

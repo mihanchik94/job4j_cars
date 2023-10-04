@@ -119,4 +119,14 @@ class HbnUserRepositoryTest {
         User result = userRepository.findByLogin("test").get();
         assertThat(result).isEqualTo(user);
     }
+
+    @Test
+    void whenFindByLoginAndPasswordThenGetUser() {
+        User user = new User();
+        user.setLogin("test");
+        user.setPassword("test1");
+        userRepository.create(user);
+        User result = userRepository.findByLoginAndPassword("test", "test1").get();
+        assertThat(result).isEqualTo(user);
+    }
 }

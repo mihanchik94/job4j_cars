@@ -19,5 +19,6 @@ public class User {
     private int id;
     private String login;
     private String password;
+    @Column(name = "phone_number")
     private String phoneNumber;
 }
