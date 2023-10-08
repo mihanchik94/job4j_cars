@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.job4j.cars.dto.FileDto;
 import ru.job4j.cars.model.File;
+import ru.job4j.cars.model.Post;
 import ru.job4j.cars.repository.FileRepository;
 
 import java.io.IOException;
@@ -19,7 +20,7 @@ public class SimpleFileService implements FileService {
     private final FileRepository fileRepository;
     private final String storageDirectory;
 
-    public SimpleFileService(FileRepository fileRepository, @Value("@{file.directory}") String storageDirectory) {
+    public SimpleFileService(FileRepository fileRepository, @Value("${file.directory}") String storageDirectory) {
         this.fileRepository = fileRepository;
         this.storageDirectory = storageDirectory;
         createStorageDirectory(storageDirectory);
@@ -62,10 +63,13 @@ public class SimpleFileService implements FileService {
     }
 
     @Override
-    public void save(FileDto file) {
+    public File save(FileDto file, Post post) {
         String path = createNewFilePath(file.getName());
         writeFileBytes(path, file.getContent());
-        fileRepository.save(new File(file.getName(), path));
+        File resultFile = new File(file.getName(), path);
+        resultFile.setPostId(post.getId());
+        fileRepository.save(resultFile);
+        return resultFile;
     }
 
 

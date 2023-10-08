@@ -55,7 +55,7 @@ class HbnFileRepositoryTest {
 
 
     @Test
-    void whenFindAllPostsThenGetList() {
+    void whenFindAllFilesThenGetList() {
         File file1 = new File();
         File file2 = new File();
 

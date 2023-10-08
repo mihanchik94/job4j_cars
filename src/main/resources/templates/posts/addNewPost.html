@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<meta charset="UTF-8">
+<head>
+    <!-- Required meta tags -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+            integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+            integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
+
+    <title>Job4j Cars - Добавить объявление</title>
+</head>
+<body>
+<div class="container-fluid p-0">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">Job4j Cars</a>
+            <div class="collapse navbar-collapse">
+                <div class="navbar-nav me-auto">
+                    <a class="nav-item nav-link" href="/">Главная</a>
+                    <a class="nav-item nav-link" th:href="@{posts/all}">Вce объявления</a>
+                    <a class="nav-item nav-link active">Добавить новое объявление</a>
+                    <a class="nav-item nav-link" href="#">Мои объявления</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div class="container-fluid px-0 py-3">
+        <div class="border border-secondary border-opacity-50">
+            <h5 class="text-center fw-semibold p-2">Информация об автомобиле</h5>
+            <form th:action="@{/posts/addNewPost}" method="post" enctype="multipart/form-data">
+                <div class="p-3 d-flex flex-wrap">
+                    <!--Car Brand-->
+                    <div class="p-2" style="width:250px">
+                        <label for="brand">Брэнд:</label>
+                        <input type="text" class="form-control border border-secondary border-opacity-50"
+                               id="brand" name="brand">
+                    </div>
+                    <!--Car Model-->
+                    <div class="p-2" style="width:250px">
+                        <label for="model">Модель:</label>
+                        <input type="text" class="form-control border border-secondary border-opacity-50"
+                               id="model" name="model">
+                    </div>
+                    <!--Car body-->
+                    <div class="p-2" style="width:150px">
+                        <label for="body">Тип кузова:</label>
+                        <select class="form-control border border-secondary border-opacity-50" id="body" name="body.id" required>
+                            <option></option>
+                            <option th:each="carBody : ${bodies}" th:value="${carBody.id}"
+                                    th:text="${carBody.name}"></option>
+                        </select>
+                    </div>
+                    <!--Car year-->
+                    <div class="p-2" style="width:150px">
+                        <label for="year">Год выпуска:</label>
+                        <select class="form-control border border-secondary border-opacity-50" id="year" name="year" required>
+                            <option></option>
+                            <option th:each="year : ${#numbers.sequence(1940, #dates.year(#dates.createNow()))}"
+                                    th:value="${year}" th:text="${year}"></option>
+                        </select>
+                    </div>
+                    <!--Car transmission-->
+                    <div class="p-2" style="width:150px">
+                        <label for="gearBox">Коробка:</label>
+                        <select class="form-control border border-secondary border-opacity-50" id="gearBox" name="gearBox.id" required>
+                            <option></option>
+                            <option th:each="gearBox : ${gearBoxes}" th:value="${gearBox.id}"
+                                    th:text="${gearBox.name}"></option>
+                        </select>
+                    </div>
+                    <!--Car drive type-->
+                    <div class="p-2" style="width:150px">
+                        <label for="driveType">Привод:</label>
+                        <select class="form-control border border-secondary border-opacity-50" id="driveType" name="driveType.id" required>
+                            <option></option>
+                            <option th:each="driveType : ${driveTypes}" th:value="${driveType.id}"
+                                    th:text="${driveType.name}"></option>
+                        </select>
+                    </div>
+                    <!--Car fuel type-->
+                    <div class="p-2" style="width:150px">
+                        <label for="fuelType">Тип топлива:</label>
+                        <select class="form-control border border-secondary border-opacity-50" id="fuelType" name="fuelType.id" required>
+                            <option></option>
+                            <option th:each="fuelType : ${fuelTypes}" th:value="${fuelType.id}"
+                                    th:text="${fuelType.name}"></option>
+                        </select>
+                    </div>
+                    <!--Car engine size-->
+                    <div class="p-2" style="width:150px">
+                        <label for="engine">Объем двигателя:</label>
+                        <select class="form-control border border-secondary border-opacity-50" id="engine" name="engine.id">
+                            <option></option>
+                            <option th:each="engine : ${engines}" th:value="${engine.id}"
+                                    th:text="${engine.size}"></option>
+                        </select>
+                    </div>
+                </div>
+                <div class="p-3 d-flex flex-wrap">
+                    <!--Car mileage-->
+                    <div class="p-2" style="width:150px">
+                        <label for="mileage">Пробег (км):</label>
+                        <input type="text" class="form-control border border-secondary border-opacity-50"
+                               id="mileage" name="mileage" required>
+                    </div>
+                    <!--Car colour-->
+                    <div class="p-2" style="width:150px">
+                        <label for="color">Цвет кузова:</label>
+                        <select class="form-control border border-secondary border-opacity-50" id="color" name="color.id" required>
+                            <option></option>
+                            <option th:each="color : ${colors}" th:value="${color.id}"
+                                    th:text="${color.name}"></option>
+                        </select>
+                    </div>
+                </div>
+                <!--Car photo-->
+                <div class="px-4" style="width:600px">
+                    <label for="files">Фото:</label>
+                    <input class="form-control form-control-sm border border-secondary border-opacity-50" type="file" id="files" name="files" data-show-caption="true" multiple>
+                </div>
+                <!--Description-->
+                <div class="p-4" style="max-width:900px">
+                    <label for="description">Описание объявления:</label>
+                    <textarea type="text" class="form-control border border-secondary border-opacity-50" rows="10"
+                              id="description" name="description" required></textarea>
+                </div>
+                <!--Car price-->
+                <div class="px-4" style="width:250px">
+                    <label for="price">Стоимость (руб):</label>
+                    <input type="text" class="form-control border border-secondary border-opacity-50"
+                           id="price" name="price">
+                </div>
+
+                <div class="d-flex p-4 justify-content-end">
+                    <button type="submit" class="btn btn-primary me-2">Добавить объявление</button>
+                    <a class="btn btn-danger me-2" th:href="@{posts/all}" role="button">Отмена</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

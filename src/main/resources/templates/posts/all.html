@@ -28,7 +28,7 @@
                 <div class="navbar-nav me-auto">
                     <a class="nav-item nav-link" href="/">Главная</a>
                     <a class="nav-item nav-link active">Вce объявления</a>
-                    <a class="nav-item nav-link" href="">Добавить новое объявление</a>
+                    <a class="nav-item nav-link" th:href="@{addNewPost}">Добавить новое объявление</a>
                     <a class="nav-item nav-link" href="#">Мои объявления</a>
                 </div>
             </div>
@@ -59,24 +59,9 @@
                 <tbody>
                 <tr th:each="post : ${posts}">
                     <td>
-                        <div class="carousel slide" id="carouselControls">
-                            <div class="carousel-inner" th:each="file, iterStat : ${post.photos}">
-                                <div th:if="${iterStat.index == 1}" class="carousel-item active">
-                                    <img class="w-100" th:src="@{/files/{fileId}(fileId=${post.photos[0].id})}" alt="no image">
-                                </div>
-                                <div th:if="${iterStat.index > 0}" class="carousel-item">
-                                    <img class="w-100" th:src="@{/files/{fileId}(fileId=${post.photos[iterStat.index].id})}">
-                                </div>
+                            <div class="mb-3">
+                                <img class="w-100" th:src="@{/files/{fileId}(fileId=${post.photos[0].id})}" alt="no image">
                             </div>
-                            <a class="carousel-control-prev" href="#carouselControls" role="button" data-slide="prev">
-                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                <span class="sr-only">Previous</span>
-                            </a>
-                            <a class="carousel-control-next" href="#carouselControls" role="button" data-slide="next">
-                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                <span class="sr-only">Next</span>
-                            </a>
-                        </div>
                     </td>
                     <td class="text-truncate p-2" style="max-width:75px;" th:text="${post.description}"></td>
                     <td class="p-2">
@@ -87,7 +72,7 @@
                     <td class="p-2" th:text="${post.car.mileage}"></td>
                     <td class="p-2" th:text="${post.car.engine.size}"></td>
                     <td class="p-2" th:text="${post.price}"></td>
-                    <td class="p-2" th:each="post : ${posts}">
+                    <td class="p-2">
                         <div class="col-6"><a class="btn btn-primary" th:href="@{{postId}(postId = ${post.id})}">Показать полностью</a></div>
                     </td>
                 </tr>

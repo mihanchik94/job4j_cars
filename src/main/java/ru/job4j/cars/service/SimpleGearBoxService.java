@@ -11,7 +11,7 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 public class SimpleGearBoxService implements GearBoxService {
-    private GearBoxRepository gearBoxRepository;
+    private final GearBoxRepository gearBoxRepository;
 
     @Override
     public List<GearBox> findAll() {

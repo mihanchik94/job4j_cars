@@ -17,8 +17,9 @@ public class HbnPostRepository implements PostRepository {
     private final CrudRepository crudRepository;
 
     @Override
-    public void save(Post post) {
+    public Post save(Post post) {
         crudRepository.run(session -> session.persist(post));
+        return post;
     }
 
     @Override

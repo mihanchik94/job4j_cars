@@ -11,7 +11,7 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 public class SimpleFuelTypeService implements FuelTypeService {
-    private FuelTypeRepository fuelTypeRepository;
+    private final FuelTypeRepository fuelTypeRepository;
 
 
     @Override

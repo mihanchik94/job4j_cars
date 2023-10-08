@@ -2,20 +2,35 @@ package ru.job4j.cars.service;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import ru.job4j.cars.dto.FileDto;
+import ru.job4j.cars.model.File;
 import ru.job4j.cars.model.Post;
 import ru.job4j.cars.repository.PostRepository;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @AllArgsConstructor
 public class SimplePostService implements PostService {
-    private PostRepository postRepository;
+    private final PostRepository postRepository;
+    private final FileService fileService;
 
     @Override
-    public void save(Post post) {
-        postRepository.save(post);
+    public void save(Post post, Set<FileDto> images) {
+        Post savedPost = postRepository.save(post);
+        saveNewFiles(savedPost, images);
+    }
+
+    private void saveNewFiles(Post post, Set<FileDto> images) {
+        Set<File> postFiles = new HashSet<>();
+        for (FileDto image : images) {
+            File resultFile = fileService.save(image, post);
+            postFiles.add(resultFile);
+        }
+        post.setPhotos(postFiles);
     }
 
     @Override

@@ -26,7 +26,7 @@
                 <div class="navbar-nav me-auto">
                     <a class="nav-item nav-link" href="/">Главная</a>
                     <a class="nav-item nav-link" th:href="@{all}">Вce объявления</a>
-                    <a class="nav-item nav-link" href="#">Добавить новое объявление</a>
+                    <a class="nav-item nav-link" th:href="@{addNewPost}">Добавить новое объявление</a>
                     <a class="nav-item nav-link" href="#">Мои объявления</a>
                 </div>
             </div>
@@ -71,7 +71,7 @@
                             <li><b>Модель:</b> <span th:text="${car.model}"></span></li>
                             <li><b>Тип кузова:</b> <span th:text="${body.name}"></span></li>
                             <li><b>Год выпуска:</b> <span th:text="${car.year}"></span></li>
-                            <li><b>Коробка:</b> <span th:text="${transmission.name}"></span></li>
+                            <li><b>Коробка:</b> <span th:text="${gearBox.name}"></span></li>
                             <li><b>Привод:</b> <span th:text="${driveType.name}"></span></li>
                             <li><b>Тип топлива:</b> <span th:text="${fuelType.name}"></span></li>
                             <li><b>Объем двигателя:</b> <span th:text="${engine.size}"></span></li>
