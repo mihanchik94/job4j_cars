@@ -31,26 +31,29 @@ class HbnFileRepositoryTest {
 
     @AfterEach
     void deleteModels() {
-        List<Post> posts = postRepository.findAll();
-        for (Post post : posts) {
-            postRepository.delete(post.getId());
-        }
-
         List<File> files = fileRepository.findAll();
         for (File file : files) {
             fileRepository.deleteById(file.getId());
+        }
+
+        List<Post> posts = postRepository.findAll();
+        for (Post post : posts) {
+            postRepository.delete(post.getId());
         }
     }
 
     @Test
     void whenFindByIdThenGetFile() {
-        File file1 = new File();
-        File file2 = new File();
+        File file = new File();
 
-        fileRepository.save(file1);
-        fileRepository.save(file2);
+        Post post = new Post();
+        Post savedPost = postRepository.save(post);
 
-        assertThat(fileRepository.findById(file1.getId())).isEqualTo(Optional.of(file1));
+        file.setPostId(savedPost.getId());
+
+        fileRepository.save(file);
+
+        assertThat(fileRepository.findById(file.getId())).isEqualTo(Optional.of(file));
     }
 
 
@@ -58,6 +61,12 @@ class HbnFileRepositoryTest {
     void whenFindAllFilesThenGetList() {
         File file1 = new File();
         File file2 = new File();
+
+        Post post = new Post();
+        Post savedPost = postRepository.save(post);
+
+        file1.setPostId(savedPost.getId());
+        file2.setPostId(savedPost.getId());
 
         fileRepository.save(file1);
         fileRepository.save(file2);

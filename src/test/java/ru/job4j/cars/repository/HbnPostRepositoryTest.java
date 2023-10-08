@@ -154,16 +154,18 @@ class HbnPostRepositoryTest {
         post1.setDescription("test1");
         post1.setUserId(user1.getId());
         post1.setCreated(TIME_1);
-        post1.setPhotos(Set.of(file));
 
         post2.setDescription("test2");
         post2.setUserId(user2.getId());
         post2.setCreated(TIME_2);
 
-        postRepository.save(post1);
+
+        Post savedPost = postRepository.save(post1);
+        file.setPostId(savedPost.getId());
+        fileRepository.save(file);
         postRepository.save(post2);
 
-        assertThat(postRepository.findPostsOnlyWithPicture()).isEqualTo(List.of(post1));
+        assertThat(postRepository.findPostsOnlyWithPicture()).isEqualTo(List.of(savedPost));
     }
 
     @Test

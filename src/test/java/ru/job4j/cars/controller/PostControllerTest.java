@@ -71,7 +71,7 @@ class PostControllerTest {
         Object expectedPost = model.getAttribute("post");
         Object expectedCar = model.getAttribute("car");
         Object expectedBody = model.getAttribute("body");
-        Object expectedGearBox = model.getAttribute("transmission");
+        Object expectedGearBox = model.getAttribute("gearBox");
         Object expectedDriveType = model.getAttribute("driveType");
         Object expectedFuelType = model.getAttribute("fuelType");
         Object expectedEngine = model.getAttribute("engine");
@@ -86,5 +86,32 @@ class PostControllerTest {
         assertThat(expectedFuelType).isEqualTo(findingPost.getCar().getFuelType());
         assertThat(expectedEngine).isEqualTo(findingPost.getCar().getEngine());
         assertThat(expectedColor).isEqualTo(findingPost.getCar().getColor());
+    }
+
+    @Test
+    public void whenRequestDeletePostAndSuccessThenGetAllPostsPage() {
+        Post deletingPost = new Post(1, "desc1", 1, LocalDateTime.now(), 1, new Car(), new HashSet<>());
+
+        when(postService.delete(anyInt())).thenReturn(true);
+
+        ConcurrentModel model = new ConcurrentModel();
+        String view = postController.deletePost(deletingPost.getId(), model);
+
+        assertThat(view).isEqualTo("redirect:/posts/all");
+    }
+
+    @Test
+    public void whenRequestDeletePostAndFailThenGetGetError404() {
+        Post deletingPost = new Post(1, "desc1", 1, LocalDateTime.now(), 1, new Car(), new HashSet<>());
+        String expectedMessage = "Объявление с указанным id не найдено";
+
+        when(postService.delete(anyInt())).thenReturn(false);
+
+        ConcurrentModel model = new ConcurrentModel();
+        String view = postController.getById(deletingPost.getId(), model);
+        Object actualMessage = model.getAttribute("message");
+
+        assertThat(view).isEqualTo("redirect:/errors/404");
+        assertThat(actualMessage).isEqualTo(expectedMessage);
     }
 }

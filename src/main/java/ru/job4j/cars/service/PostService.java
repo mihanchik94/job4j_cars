@@ -14,5 +14,5 @@ public interface PostService {
     List<Post> findPostsOnlyWithPicture();
     List<Post> findPostsByName(String carName);
     Optional<Post> findPostById(int id);
-    void delete(int id);
+    boolean delete(int id);
 }

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.job4j.cars.dto.FileDto;
 import ru.job4j.cars.model.File;
 import ru.job4j.cars.model.Post;
+import ru.job4j.cars.repository.CarRepository;
 import ru.job4j.cars.repository.PostRepository;
 
 import java.util.HashSet;
@@ -17,6 +18,7 @@ import java.util.Set;
 public class SimplePostService implements PostService {
     private final PostRepository postRepository;
     private final FileService fileService;
+    private final CarRepository carRepository;
 
     @Override
     public void save(Post post, Set<FileDto> images) {
@@ -59,7 +61,17 @@ public class SimplePostService implements PostService {
     }
 
     @Override
-    public void delete(int id) {
-        postRepository.delete(id);
+    public boolean delete(int id) {
+        boolean result = false;
+        Optional<Post> optionalPost = postRepository.findPostById(id);
+        if (optionalPost.isEmpty()) {
+            return result;
+        } else {
+            Set<File> postFiles = optionalPost.get().getPhotos();
+            postFiles.forEach(file -> fileService.deleteById(file.getId()));
+            result = postRepository.delete(id);
+            carRepository.delete(optionalPost.get().getCar().getId());
+        }
+        return result;
     }
 }

@@ -104,4 +104,14 @@ public class PostController {
         postService.save(post, postFiles);
         return "redirect:/posts/all";
     }
+
+    @GetMapping("delete/{id}")
+    public String deletePost(@PathVariable int id, Model model) {
+        boolean isDeleted = postService.delete(id);
+        if (!isDeleted) {
+            model.addAttribute("message", "Объявление с указанным id не найдено");
+            return "redirect:/errors/404";
+        }
+        return "redirect:/posts/all";
+    }
 }

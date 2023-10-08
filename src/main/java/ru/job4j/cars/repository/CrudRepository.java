@@ -49,6 +49,17 @@ public class CrudRepository {
         return tx(command);
     }
 
+    public boolean query(String query, Map<String, Object> args) {
+        Function<Session, Boolean> command = session -> {
+            Query sq = session.createQuery(query);
+            for (Map.Entry<String, Object> arg : args.entrySet()) {
+                sq.setParameter(arg.getKey(), arg.getValue());
+            }
+            return sq.executeUpdate() > 0;
+        };
+        return tx(command);
+    }
+
     public <T> List<T> query(String query, Class<T> cl) {
         Function<Session, List<T>> command = session -> session
                 .createQuery(query, cl)

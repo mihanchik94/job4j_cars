@@ -83,6 +83,12 @@
                 </tr>
             </table>
         </div>
+        <div th:if="${post.userId == user.id}" class="d-flex justify-content-end">
+            <a class="btn btn-outline-primary me-2" href="#"
+               role="button">Изменить объявление</a>
+            <a class="btn btn-outline-danger me-2" th:href="@{/posts/delete/{postId}(postId=${post.id})}"
+               role="button">Удалить объявление</a>
+        </div>
     </div>
 </div>
 </body>
