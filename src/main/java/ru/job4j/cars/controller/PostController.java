@@ -12,13 +12,12 @@ import ru.job4j.cars.model.Car;
 import ru.job4j.cars.model.Post;
 import ru.job4j.cars.model.User;
 import ru.job4j.cars.service.*;
+import ru.job4j.cars.utils.FileDtoConverter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/posts")
@@ -52,7 +51,7 @@ public class PostController {
         return "posts/all";
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public String getById(@PathVariable int id, Model model){
         Optional<Post> optionalPost = postService.findPostById(id);
         if (optionalPost.isEmpty()) {
@@ -92,26 +91,52 @@ public class PostController {
         HttpSession session = request.getSession();
         User user = (User) session.getAttribute("user");
         post.setUserId(user.getId());
-        Set<FileDto> postFiles = files.stream().map(file -> {
-            FileDto result = null;
-            try {
-                result = new FileDto(file.getOriginalFilename(), file.getBytes());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return result;
-        }).collect(Collectors.toSet());
+        Set<FileDto> postFiles = FileDtoConverter.convert(files);
         postService.save(post, postFiles);
         return "redirect:/posts/all";
     }
 
-    @GetMapping("delete/{id}")
+    @GetMapping("/delete/{id}")
     public String deletePost(@PathVariable int id, Model model) {
         boolean isDeleted = postService.delete(id);
         if (!isDeleted) {
             model.addAttribute("message", "Объявление с указанным id не найдено");
             return "redirect:/errors/404";
         }
+        return "redirect:/posts/all";
+    }
+
+    @GetMapping("/update/{id}")
+    public String getUpdatePostPage(@PathVariable int id, Model model) {
+        Optional<Post> optionalPost = postService.findPostById(id);
+        if (optionalPost.isEmpty()) {
+            model.addAttribute("message", "Объявление с указанным id не найдено");
+            return "redirect:/errors/404";
+        }
+        model.addAttribute("bodies", bodyService.findAll());
+        model.addAttribute("post", optionalPost.get());
+        model.addAttribute("car", optionalPost.get().getCar());
+        model.addAttribute("gearBoxes", gearBoxService.findAll());
+        model.addAttribute("driveTypes", driveTypeService.findAll());
+        model.addAttribute("fuelTypes", fuelTypeService.findAll());
+        model.addAttribute("engines", engineService.findAll());
+        model.addAttribute("colors", colorService.findAll());
+        return "posts/update";
+    }
+
+    @PostMapping("/update/{id}")
+    public String update(@PathVariable int id, @ModelAttribute Car car, Model model, @RequestParam Set<MultipartFile> files, HttpServletRequest request) {
+        Optional<Post> optionalPost = postService.findPostById(id);
+        HttpSession session = request.getSession();
+        User checkedUser = (User) session.getAttribute("user");
+        if (checkedUser.getId() != optionalPost.get().getUserId()) {
+            model.addAttribute("message", "У вас нет возможности обновлять объявление");
+            return "redirect:/errors/404";
+        }
+        carService.update(car);
+        Set<FileDto> postFiles = FileDtoConverter.convert(files);
+        optionalPost.get().setCar(car);
+        postService.update(optionalPost.get(), postFiles);
         return "redirect:/posts/all";
     }
 }

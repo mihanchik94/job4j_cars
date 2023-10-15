@@ -37,4 +37,9 @@ public class SimpleCarService implements CarService {
     public Optional<Car> findById(int id) {
         return carRepository.findById(id);
     }
+
+    @Override
+    public void update(Car car) {
+        carRepository.update(car);
+    }
 }

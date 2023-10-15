@@ -78,4 +78,16 @@ class HbnCarRepositoryTest {
         carRepository.delete(id);
         assertThat(carRepository.findById(id)).isEqualTo(Optional.empty());
     }
+
+    @Test
+    void whenUpdateThenGetUpdatedObject() {
+        Car car = new Car();
+        car.setBrand("Voyah");
+        carRepository.save(car);
+        Car updatedCar = new Car();
+        updatedCar.setId(car.getId());
+        updatedCar.setBrand("Jaguar");
+        carRepository.update(updatedCar);
+        assertThat(carRepository.findById(car.getId())).isEqualTo(Optional.of(updatedCar));
+    }
 }

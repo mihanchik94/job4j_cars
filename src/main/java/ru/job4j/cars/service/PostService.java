@@ -15,4 +15,5 @@ public interface PostService {
     List<Post> findPostsByName(String carName);
     Optional<Post> findPostById(int id);
     boolean delete(int id);
+    void update(Post post, Set<FileDto> images);
 }

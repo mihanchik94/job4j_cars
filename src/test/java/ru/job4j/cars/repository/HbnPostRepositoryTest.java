@@ -217,4 +217,16 @@ class HbnPostRepositoryTest {
 
            assertThat(postRepository.findPostsByName("Audi")).isEqualTo(List.of(post1));
     }
+
+    @Test
+    void whenUpdateThenGetUpdatedObject() {
+        Post post = new Post();
+        post.setDescription("test");
+        postRepository.save(post);
+        Post updatedPost = new Post();
+        updatedPost.setId(post.getId());
+        updatedPost.setDescription("test1");
+       postRepository.update(updatedPost);
+        assertThat(postRepository.findPostById(post.getId())).isEqualTo(Optional.of(updatedPost));
+    }
 }

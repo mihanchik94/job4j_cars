@@ -74,4 +74,14 @@ public class SimplePostService implements PostService {
         }
         return result;
     }
+
+    @Override
+    public void update(Post post, Set<FileDto> images) {
+        if (!images.isEmpty()) {
+            Set<File> postFiles = post.getPhotos();
+            postFiles.forEach(file -> fileService.deleteById(file.getId()));
+            saveNewFiles(post, images);
+        }
+        postRepository.update(post);
+    }
 }

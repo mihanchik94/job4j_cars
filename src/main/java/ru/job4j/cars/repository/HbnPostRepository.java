@@ -55,4 +55,9 @@ public class HbnPostRepository implements PostRepository {
         return crudRepository.query("delete from Post p where p.id = :fId",
                 Map.of("fId", id));
     }
+
+    @Override
+    public void update(Post post) {
+        crudRepository.run(session -> session.update(post));
+    }
 }

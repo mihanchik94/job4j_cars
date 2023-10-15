@@ -46,12 +46,33 @@
                 <tr>
                     <td>
                         <div class="carousel slide" id="carouselControls" data-interval="false">
-                            <div class="carousel-inner" th:each="file, iterStat : ${post.photos}" style="width:100% !important; height:auto">
-                                <div th:if="${iterStat.index == 1}" class="carousel-item active" style="width:100%; height:auto">
+                            <div class="carousel-inner" style="width:100% !important; height:auto">
+                                <div class="carousel-item active" style="width:100%; height:auto">
                                     <img class="w-100" th:src="@{/files/{fileId}(fileId=${post.photos[0].id})}" alt="no image">
                                 </div>
-                                <div th:if="${iterStat.index > 0}" class="carousel-item" style="width:100%; height:auto">
-                                    <img class="w-100" th:src="@{/files/{fileId}(fileId=${post.photos[iterStat.index].id})}">
+                                <div th:if="${post.photos.size > 1}" class="carousel-item" style="width:100%; height:auto">
+                                    <img class="w-100" th:src="@{/files/{fileId}(fileId=${post.photos[1].id})}">
+                                </div>
+                                <div th:if="${post.photos.size > 2}" class="carousel-item" style="width:100%; height:auto">
+                                    <img class="w-100" th:src="@{/files/{fileId}(fileId=${post.photos[2].id})}">
+                                </div>
+                                <div th:if="${post.photos.size > 3}" class="carousel-item" style="width:100%; height:auto">
+                                    <img class="w-100" th:src="@{/files/{fileId}(fileId=${post.photos[3].id})}">
+                                </div>
+                                <div th:if="${post.photos.size > 4}"  class="carousel-item" style="width:100%; height:auto">
+                                    <img class="w-100" th:src="@{/files/{fileId}(fileId=${post.photos[4].id})}">
+                                </div>
+                                <div th:if="${post.photos.size > 5}" class="carousel-item" style="width:100%; height:auto">
+                                    <img class="w-100" th:src="@{/files/{fileId}(fileId=${post.photos[5].id})}">
+                                </div>
+                                <div th:if="${post.photos.size > 6}" class="carousel-item" style="width:100%; height:auto">
+                                    <img class="w-100" th:src="@{/files/{fileId}(fileId=${post.photos[6].id})}">
+                                </div>
+                                <div th:if="${post.photos.size > 7}" class="carousel-item" style="width:100%; height:auto">
+                                    <img class="w-100" th:src="@{/files/{fileId}(fileId=${post.photos[7].id})}">
+                                </div>
+                                <div th:if="${post.photos.size > 8}" class="carousel-item" style="width:100%; height:auto">
+                                    <img class="w-100" th:src="@{/files/{fileId}(fileId=${post.photos[8].id})}">
                                 </div>
                             </div>
                             <a class="carousel-control-prev" href="#carouselControls" role="button" data-slide="prev">
@@ -84,7 +105,7 @@
             </table>
         </div>
         <div th:if="${post.userId == user.id}" class="d-flex justify-content-end">
-            <a class="btn btn-outline-primary me-2" href="#"
+            <a class="btn btn-outline-primary me-2" th:href="@{/posts/update/{postId}(postId=${post.id})}"
                role="button">Изменить объявление</a>
             <a class="btn btn-outline-danger me-2" th:href="@{/posts/delete/{postId}(postId=${post.id})}"
                role="button">Удалить объявление</a>

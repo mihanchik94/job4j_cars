@@ -5,6 +5,7 @@ import net.jcip.annotations.ThreadSafe;
 import org.springframework.stereotype.Repository;
 import ru.job4j.cars.model.Car;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -12,8 +13,9 @@ import java.util.Optional;
 @ThreadSafe
 @Repository
 @AllArgsConstructor
-public class HbnCarRepository  implements CarRepository {
+public class HbnCarRepository implements CarRepository {
     private final CrudRepository crudRepository;
+
 
     @Override
     public List<Car> findAll() {
@@ -41,5 +43,10 @@ public class HbnCarRepository  implements CarRepository {
     public Optional<Car> findById(int id) {
         return crudRepository.optional("from Car c where c.id = :fId", Car.class,
                 Map.of("fId", id));
+    }
+
+    @Override
+    public void update(Car car) {
+        crudRepository.run(session -> session.update(car));
     }
 }

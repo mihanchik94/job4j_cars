@@ -13,4 +13,5 @@ public interface PostRepository {
     List<Post> findPostsByName(String carName);
     Optional<Post> findPostById(int id);
     boolean delete(int id);
+    void update(Post post);
 }

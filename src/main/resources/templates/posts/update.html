@@ -15,7 +15,7 @@
             integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
 
-    <title>Job4j Cars - Добавить объявление</title>
+    <title>Job4j Cars - Редактировать объявление</title>
 </head>
 <body>
 <div class="container-fluid p-0">
@@ -26,7 +26,7 @@
                 <div class="navbar-nav me-auto">
                     <a class="nav-item nav-link" href="/">Главная</a>
                     <a class="nav-item nav-link" th:href="@{posts/all}">Вce объявления</a>
-                    <a class="nav-item nav-link active">Добавить новое объявление</a>
+                    <a class="nav-item nav-link" th:href="@{addNewPost}">Добавить новое объявление</a>
                     <a class="nav-item nav-link" href="#">Мои объявления</a>
                 </div>
             </div>
@@ -35,19 +35,24 @@
     <div class="container-fluid px-0 py-3">
         <div class="border border-secondary border-opacity-50">
             <h5 class="text-center fw-semibold p-2">Информация об автомобиле</h5>
-            <form th:action="@{/posts/addNewPost}" method="post" enctype="multipart/form-data">
+            <form th:action="@{/posts/update/{postId}(postId=${post.id})}" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="id" th:field="${post.id}">
+                <input type="hidden" name="created" th:field="${post.created}">
+                <input type="hidden" name="userId" th:field="${post.userId}">
+               <!-- <input type="hidden" name="car" th:field="${post.car}">-->
+              <!--  <input type="hidden" name="photos" th:field="${post.photos}">-->
                 <div class="p-3 d-flex flex-wrap">
                     <!--Car Brand-->
                     <div class="p-2" style="width:250px">
                         <label for="brand">Брэнд:</label>
                         <input type="text" class="form-control border border-secondary border-opacity-50"
-                               id="brand" name="brand">
+                               id="brand" name="brand" th:value="${car.brand}">
                     </div>
                     <!--Car Model-->
                     <div class="p-2" style="width:250px">
                         <label for="model">Модель:</label>
                         <input type="text" class="form-control border border-secondary border-opacity-50"
-                               id="model" name="model">
+                               id="model" name="model" th:value="${car.model}">
                     </div>
                     <!--Car body-->
                     <div class="p-2" style="width:150px">
@@ -109,7 +114,7 @@
                     <div class="p-2" style="width:150px">
                         <label for="mileage">Пробег (км):</label>
                         <input type="text" class="form-control border border-secondary border-opacity-50"
-                               id="mileage" name="mileage" required>
+                               id="mileage" name="mileage" required th:value="${car.mileage}">
                     </div>
                     <!--Car colour-->
                     <div class="p-2" style="width:150px">
@@ -129,19 +134,19 @@
                 <!--Description-->
                 <div class="p-4" style="max-width:900px">
                     <label for="description">Описание объявления:</label>
-                    <textarea type="text" class="form-control border border-secondary border-opacity-50" rows="10"
-                              id="description" name="description" required></textarea>
+                    <textarea type="text" th:text="${post.description}" class="form-control border border-secondary border-opacity-50" rows="10"
+                              id="description" name="description"></textarea>
                 </div>
                 <!--Car price-->
                 <div class="px-4" style="width:250px">
                     <label for="price">Стоимость (руб):</label>
                     <input type="text" class="form-control border border-secondary border-opacity-50"
-                           id="price" name="price">
+                           id="price" name="price" th:value="${post.price}">
                 </div>
 
                 <div class="d-flex p-4 justify-content-end">
-                    <button type="submit" class="btn btn-primary me-2">Добавить объявление</button>
-                    <a class="btn btn-danger me-2" th:href="@{posts/all}" role="button">Отмена</a>
+                    <button type="submit" class="btn btn-primary me-2">Обновить объявление</button>
+                    <a class="btn btn-danger me-2" th:href="@{/posts/{postId}(postId = ${post.id})}" role="button">Отмена</a>
                 </div>
             </form>
         </div>
