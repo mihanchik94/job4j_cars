@@ -17,7 +17,7 @@
             integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
 
-    <title>Job4j Cars - Все объявления</title>
+    <title>Job4j Cars - Мои объявления</title>
 </head>
 <body>
 <div class="container-fluid p-0">
@@ -27,9 +27,9 @@
             <div class="collapse navbar-collapse">
                 <div class="navbar-nav me-auto">
                     <a class="nav-item nav-link" href="/">Главная</a>
-                    <a class="nav-item nav-link active">Вce объявления</a>
+                    <a class="nav-item nav-link" th:href="@{all}">Вce объявления</a>
                     <a class="nav-item nav-link" th:href="@{addNewPost}">Добавить новое объявление</a>
-                    <a class="nav-item nav-link" th:href="@{myPosts}">Мои объявления</a>
+                    <a class="nav-item nav-link active">Мои объявления</a>
                 </div>
             </div>
         </div>
@@ -59,9 +59,9 @@
                 <tbody>
                 <tr th:each="post : ${posts}">
                     <td>
-                            <div class="mb-3">
-                                <img class="w-100" th:src="@{/files/{fileId}(fileId=${post.photos[0].id})}" alt="no image">
-                            </div>
+                        <div class="mb-3">
+                            <img class="w-100" th:src="@{/files/{fileId}(fileId=${post.photos[0].id})}" alt="no image">
+                        </div>
                     </td>
                     <td class="text-truncate p-2" style="max-width:75px;" th:text="${post.description}"></td>
                     <td class="p-2">
@@ -74,6 +74,12 @@
                     <td class="p-2" th:text="${post.price}"></td>
                     <td class="p-2">
                         <div class="col-6"><a class="btn btn-primary" th:href="@{{postId}(postId = ${post.id})}">Показать полностью</a></div>
+                    </td>
+                    <td class="p-2">
+                        <div class="col-6"><a class="btn btn-primary" th:href="@{/posts/changePrice/{postId}(postId=${post.id})}">Изменить стоимость</a></div>
+                    </td>
+                    <td class="p-2">
+                        <div class="col-6"><a class="btn btn-danger" th:href="@{/posts/delete/{postId}(postId=${post.id})}">Удалить объявление</a></div>
                     </td>
                 </tr>
                 </tbody>

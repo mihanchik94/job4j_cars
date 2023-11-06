@@ -13,7 +13,9 @@ public interface PostService {
     List<Post> findPostsOfToday();
     List<Post> findPostsOnlyWithPicture();
     List<Post> findPostsByName(String carName);
+    List<Post> findPostsOfUser(int userId);
     Optional<Post> findPostById(int id);
     boolean delete(int id);
     void update(Post post, Set<FileDto> images);
+    boolean changePrice(int id, int price);
 }

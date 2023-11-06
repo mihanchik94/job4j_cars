@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.*;
 
 class HbnPostRepositoryTest {
@@ -226,7 +227,65 @@ class HbnPostRepositoryTest {
         Post updatedPost = new Post();
         updatedPost.setId(post.getId());
         updatedPost.setDescription("test1");
-       postRepository.update(updatedPost);
+        postRepository.update(updatedPost);
         assertThat(postRepository.findPostById(post.getId())).isEqualTo(Optional.of(updatedPost));
+    }
+
+    @Test
+    void whenFindPostsOfUserThenGetList() {
+        Post post1 = new Post();
+        Post post2 = new Post();
+
+        User user1 = new User();
+        User user2 = new User();
+
+        user1.setLogin("test1");
+        user1.setPassword("test");
+
+        user2.setLogin("test2");
+        user2.setPassword("test");
+
+        userRepository.create(user1);
+        userRepository.create(user2);
+
+        post1.setDescription("test1");
+        post1.setUserId(user1.getId());
+        post1.setCreated(TIME_1);
+
+        post2.setDescription("test2");
+        post2.setUserId(user2.getId());
+        post2.setCreated(TIME_2);
+
+        postRepository.save(post1);
+        postRepository.save(post2);
+
+        List<Post> result = postRepository.findPostsOfUser(user1.getId());
+
+        assertThat(result).isEqualTo(List.of(post1));
+    }
+
+    @Test
+    void whenDontFindPostsOfUserThenGetEmptyList() {
+        User user1 = new User();
+
+        user1.setLogin("test1");
+        user1.setPassword("test");
+
+        userRepository.create(user1);
+
+        List<Post> result = postRepository.findPostsOfUser(user1.getId());
+
+        assertThat(result).isEqualTo(emptyList());
+    }
+
+    @Test
+    void whenChangePriceThenGetPostWithNewPrice() {
+        Post post = new Post();
+        post.setPrice(1000);
+        postRepository.save(post);
+        boolean isChanged = postRepository.changePrice(post.getId(), 10);
+        Post changedPost = postRepository.findPostById(post.getId()).get();
+        assertThat(isChanged).isTrue();
+        assertThat(changedPost.getPrice()).isEqualTo(10);
     }
 }

@@ -11,7 +11,9 @@ public interface PostRepository {
     List<Post> findPostsOfToday();
     List<Post> findPostsOnlyWithPicture();
     List<Post> findPostsByName(String carName);
+    List<Post> findPostsOfUser(int userId);
     Optional<Post> findPostById(int id);
     boolean delete(int id);
     void update(Post post);
+    boolean changePrice(int id, int price);
 }

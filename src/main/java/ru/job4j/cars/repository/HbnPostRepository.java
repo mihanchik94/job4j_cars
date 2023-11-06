@@ -45,6 +45,12 @@ public class HbnPostRepository implements PostRepository {
     }
 
     @Override
+    public List<Post> findPostsOfUser(int userId) {
+        return crudRepository.query("from Post p where p.userId = :fUserId", Post.class,
+                Map.of("fUserId", userId));
+    }
+
+    @Override
     public Optional<Post> findPostById(int id) {
         return crudRepository.optional("from Post where id = :fId", Post.class,
                 Map.of("fId", id));
@@ -59,5 +65,12 @@ public class HbnPostRepository implements PostRepository {
     @Override
     public void update(Post post) {
         crudRepository.run(session -> session.update(post));
+    }
+
+    @Override
+    public boolean changePrice(int id, int price) {
+        return crudRepository.query("update Post set price = :fPrice where id = :fId",
+                Map.of("fPrice", price,
+                        "fId", id));
     }
 }

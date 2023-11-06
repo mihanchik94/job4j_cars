@@ -139,4 +139,40 @@ public class PostController {
         postService.update(optionalPost.get(), postFiles);
         return "redirect:/posts/all";
     }
+
+    @GetMapping("/myPosts")
+    public String getPostsOfUserPage(Model model, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        User user = (User) session.getAttribute("user");
+        model.addAttribute("posts", postService.findPostsOfUser(user.getId()));
+        return "posts/userPosts";
+    }
+
+    @GetMapping("/changePrice/{id}")
+    public String getChangePricePage(@PathVariable int id, HttpServletRequest request, Model model) {
+        Optional<Post> optionalPost = postService.findPostById(id);
+        if (optionalPost.isEmpty()) {
+            model.addAttribute("message", "Объявление с указанным id не найдено");
+            return "redirect:/errors/404";
+        }
+        HttpSession session = request.getSession();
+        User checkedUser = (User) session.getAttribute("user");
+        if (checkedUser.getId() != optionalPost.get().getUserId()) {
+            model.addAttribute("message", "У вас нет возможности обновлять объявление");
+            return "redirect:/errors/404";
+        }
+        model.addAttribute("post", optionalPost.get());
+        model.addAttribute("price", optionalPost.get().getPrice());
+        return "posts/changePrice";
+    }
+
+    @PostMapping("/changePrice/{id}")
+    public String changePrice(@PathVariable int id, @RequestParam Integer price, Model model) {
+        boolean isChanged = postService.changePrice(id, price);
+        if (!isChanged) {
+            model.addAttribute("message", "Произлщла ошибка при обновлении стоимости объявления");
+            return "redirect:/errors/404";
+        }
+        return "redirect:/posts/myPosts";
+    }
 }

@@ -23,7 +23,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public String register(@RequestParam User user, Model model, HttpServletRequest request) {
+    public String register(@ModelAttribute User user, Model model, HttpServletRequest request) {
         Optional<User> userOptional = userService.create(user);
         if (userOptional.isEmpty()) {
             model.addAttribute("message", "Пользователь с таким логином уже существует");

@@ -56,6 +56,11 @@ public class SimplePostService implements PostService {
     }
 
     @Override
+    public List<Post> findPostsOfUser(int userId) {
+        return postRepository.findPostsOfUser(userId);
+    }
+
+    @Override
     public Optional<Post> findPostById(int id) {
         return postRepository.findPostById(id);
     }
@@ -83,5 +88,10 @@ public class SimplePostService implements PostService {
             saveNewFiles(post, images);
         }
         postRepository.update(post);
+    }
+
+    @Override
+    public boolean changePrice(int id, int price) {
+        return postRepository.changePrice(id, price);
     }
 }

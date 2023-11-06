@@ -2,10 +2,13 @@ package ru.job4j.cars.controller;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.ui.ConcurrentModel;
 import ru.job4j.cars.model.*;
 import ru.job4j.cars.service.PostService;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
@@ -19,11 +22,16 @@ import static org.mockito.Mockito.when;
 class PostControllerTest {
     private PostService postService;
     private PostController postController;
+    private HttpServletRequest request;
+    private HttpSession session;
 
     @BeforeEach
     public void initServices() {
         postService = mock(PostService.class);
         postController = new PostController(postService);
+        request = Mockito.mock(HttpServletRequest.class);
+        session = Mockito.mock(HttpSession.class);
+        when(request.getSession()).thenReturn(session);
     }
 
     @Test
@@ -113,5 +121,21 @@ class PostControllerTest {
 
         assertThat(view).isEqualTo("redirect:/errors/404");
         assertThat(actualMessage).isEqualTo(expectedMessage);
+    }
+
+    @Test
+    public void whenRequestPostsOfTheUserPageThenGetPageWithPostsOfTheUser() {
+        User user = new User();
+        Post post1 = new Post(1, "desc1", 1, LocalDateTime.now(), user.getId(), new Car(), new HashSet<>());
+
+        when(postService.findPostsOfUser(anyInt())).thenReturn(List.of(post1));
+        when(session.getAttribute("user")).thenReturn(user);
+
+        ConcurrentModel model = new ConcurrentModel();
+        String view = postController.getPostsOfUserPage(model, request);
+        Object actualList = model.getAttribute("posts");
+
+        assertThat(view).isEqualTo("posts/userPosts");
+        assertThat(actualList).isEqualTo(List.of(post1));
     }
 }
