@@ -5,7 +5,9 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.ui.ConcurrentModel;
 import ru.job4j.cars.model.*;
-import ru.job4j.cars.service.PostService;
+import ru.job4j.cars.service.carBrand.CarBrandService;
+import ru.job4j.cars.service.carModel.CarModelService;
+import ru.job4j.cars.service.post.PostService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -15,11 +17,13 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class PostControllerTest {
+    private CarBrandService carBrandService;
+    private CarModelService carModelService;
     private PostService postService;
     private PostController postController;
     private HttpServletRequest request;
@@ -27,8 +31,12 @@ class PostControllerTest {
 
     @BeforeEach
     public void initServices() {
+        carBrandService = mock(CarBrandService.class);
+        carModelService = mock(CarModelService.class);
         postService = mock(PostService.class);
         postController = new PostController(postService);
+        postController.setCarBrandService(carBrandService);
+        postController.setCarModelService(carModelService);
         request = Mockito.mock(HttpServletRequest.class);
         session = Mockito.mock(HttpSession.class);
         when(request.getSession()).thenReturn(session);
@@ -36,14 +44,29 @@ class PostControllerTest {
 
     @Test
     public void whenRequestAllPostsPageThenGetAllPostsPage() {
-        Post post1 = new Post(1, "desc1", 1, LocalDateTime.now(), 1, new Car(), new HashSet<>());
-        Post post2 = new Post(2, "desc2", 2, LocalDateTime.now(), 2, new Car(), new HashSet<>());
+        CarBrand carBrand = new CarBrand();
+        CarModel carModel = new CarModel();
+
+        carModel.setCarBrand(carBrand);
+
+        Car car1 = new Car();
+        Car car2 = new Car();
+
+        car1.setCarBrand(carBrand);
+        car1.setCarModel(carModel);
+        car2.setCarBrand(carBrand);
+        car2.setCarModel(carModel);
+
+        Post post1 = new Post(1, "desc1", 1, LocalDateTime.now(), 1, car1, new HashSet<>());
+        Post post2 = new Post(2, "desc2", 2, LocalDateTime.now(), 2, car2, new HashSet<>());
         List<Post> expectedPosts = List.of(post1, post2);
 
+        when(carBrandService.findAll()).thenReturn(List.of(carBrand));
+        when(carModelService.findAll()).thenReturn(List.of(carModel));
         when(postService.findAll()).thenReturn(expectedPosts);
 
         ConcurrentModel model = new ConcurrentModel();
-        String view = postController.getAll(model);
+        String view = postController.getAll(model, null, null, null, null, null, null);
         Object actualPosts = model.getAttribute("posts");
 
         assertThat(view).isEqualTo("posts/all");
@@ -67,7 +90,7 @@ class PostControllerTest {
 
     @Test
     public void whenRequestOnePostPageAndSuccessThenGetPageWithPost() {
-        Car car = new Car(1, "Volvo", "XC90", 2022, 5, new Engine(1, "3.0"), new Body(1, "Внедорожник"),
+        Car car = new Car(1, new CarBrand(), new CarModel(), 2022, 5, new Engine(1, "3.0"), new Body(1, "Внедорожник"),
                 new GearBox(1, "Автомат"), new FuelType(1, "Дизель"), new DriveType(1, "Полный"),
                 new Color(1, "Голубой"));
         Post findingPost = new Post(1, "desc1", 1, LocalDateTime.now(), 1, car, new HashSet<>());

@@ -8,28 +8,36 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import ru.job4j.cars.model.Car;
-import ru.job4j.cars.model.File;
-import ru.job4j.cars.model.Post;
-import ru.job4j.cars.model.User;
+import ru.job4j.cars.model.*;
+import ru.job4j.cars.repository.car.CarRepository;
+import ru.job4j.cars.repository.car.HbnCarRepository;
+import ru.job4j.cars.repository.carBrand.CarBrandRepository;
+import ru.job4j.cars.repository.carBrand.HbnCarBrandRepository;
+import ru.job4j.cars.repository.carModel.CarModelRepository;
+import ru.job4j.cars.repository.carModel.HbnCarModelRepository;
+import ru.job4j.cars.repository.file.FileRepository;
+import ru.job4j.cars.repository.file.HbnFileRepository;
+import ru.job4j.cars.repository.post.HbnPostRepository;
+import ru.job4j.cars.repository.post.PostRepository;
+import ru.job4j.cars.repository.user.HbnUserRepository;
+import ru.job4j.cars.repository.user.UserRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.*;
 
 class HbnPostRepositoryTest {
-    private final LocalDateTime TIME_1 = LocalDateTime.now().plusDays(1).withNano(0);
-    private final LocalDateTime TIME_2 = LocalDateTime.now().minusDays(3).withNano(0);
     private static StandardServiceRegistry registry;
     private static SessionFactory sf;
     private static PostRepository postRepository;
     private static UserRepository userRepository;
     private static FileRepository fileRepository;
     private static CarRepository carRepository;
+    private static CarBrandRepository carBrandRepository;
+    private static CarModelRepository carModelRepository;
 
     @BeforeAll
     public static void initRepository() {
@@ -40,6 +48,8 @@ class HbnPostRepositoryTest {
         userRepository = new HbnUserRepository(crudRepository);
         fileRepository = new HbnFileRepository(crudRepository);
         carRepository = new HbnCarRepository(crudRepository);
+        carBrandRepository = new HbnCarBrandRepository(crudRepository);
+        carModelRepository = new HbnCarModelRepository(crudRepository);
     }
 
     @AfterEach
@@ -58,6 +68,21 @@ class HbnPostRepositoryTest {
         for (Post post : posts) {
             postRepository.delete(post.getId());
         }
+
+        List<CarModel> models = carModelRepository.findAll();
+        for (CarModel model : models) {
+            carModelRepository.delete(model.getId());
+        }
+
+        List<Car> cars = carRepository.findAll();
+        for (Car car : cars) {
+            carRepository.delete(car.getId());
+        }
+
+        List<CarBrand> brands = carBrandRepository.findAll();
+        for (CarBrand brand : brands) {
+            carBrandRepository.delete(brand.getId());
+        }
     }
 
     @AfterAll
@@ -70,110 +95,16 @@ class HbnPostRepositoryTest {
     void whenFindAllPostsThenGetList() {
         Post post1 = new Post();
         Post post2 = new Post();
-
-        User user1 = new User();
-        User user2 = new User();
-
-        user1.setLogin("test1");
-        user1.setPassword("test");
-
-        user2.setLogin("test2");
-        user2.setPassword("test");
-
-        userRepository.create(user1);
-        userRepository.create(user2);
-
-        post1.setDescription("test1");
-        post1.setUserId(user1.getId());
-        post1.setCreated(TIME_1);
-
-        post2.setDescription("test2");
-        post2.setUserId(user2.getId());
-        post2.setCreated(TIME_2);
-
         postRepository.save(post1);
         postRepository.save(post2);
-
         List<Post> result = postRepository.findAll();
-
         assertThat(result).isEqualTo(List.of(post1, post2));
-    }
-
-    @Test
-    void whenFindPostsOfTodayThenGetList() {
-        Post post1 = new Post();
-        Post post2 = new Post();
-
-        User user1 = new User();
-        User user2 = new User();
-
-        user1.setLogin("test1");
-        user1.setPassword("test");
-
-        user2.setLogin("test2");
-        user2.setPassword("test");
-
-        userRepository.create(user1);
-        userRepository.create(user2);
-
-        post1.setDescription("test1");
-        post1.setUserId(user1.getId());
-        post1.setCreated(TIME_1);
-
-        post2.setDescription("test2");
-        post2.setUserId(user2.getId());
-        post2.setCreated(TIME_2);
-
-        postRepository.save(post1);
-        postRepository.save(post2);
-
-        assertThat(postRepository.findPostsOfToday()).isEqualTo(List.of(post1));
-    }
-
-    @Test
-    void whenFindPostsOnlyWithPictureThenGetList() {
-        User user1 = new User();
-        User user2 = new User();
-
-        user1.setLogin("test1");
-        user1.setPassword("test");
-        user2.setLogin("test2");
-        user2.setPassword("test");
-
-        userRepository.create(user1);
-        userRepository.create(user2);
-
-        File file = new File();
-        file.setName("file");
-        file.setPath("/");
-
-
-        Post post1 = new Post();
-        Post post2 = new Post();
-
-
-        post1.setDescription("test1");
-        post1.setUserId(user1.getId());
-        post1.setCreated(TIME_1);
-
-        post2.setDescription("test2");
-        post2.setUserId(user2.getId());
-        post2.setCreated(TIME_2);
-
-
-        Post savedPost = postRepository.save(post1);
-        file.setPostId(savedPost.getId());
-        fileRepository.save(file);
-        postRepository.save(post2);
-
-        assertThat(postRepository.findPostsOnlyWithPicture()).isEqualTo(List.of(savedPost));
     }
 
     @Test
     void whenFindPostByIdThenGetOptionalPost() {
         Post post1 = new Post();
         postRepository.save(post1);
-
         assertThat(postRepository.findPostById(post1.getId())).isEqualTo(Optional.of(post1));
     }
 
@@ -181,42 +112,29 @@ class HbnPostRepositoryTest {
         void whenFindPostsByBrandThenGetList() {
             Post post1 = new Post();
             Post post2 = new Post();
-
-            User user1 = new User();
-            User user2 = new User();
-
             Car car1 = new Car();
             Car car2 = new Car();
+            CarBrand carBrand1 = new CarBrand();
+            CarBrand carBrand2 = new CarBrand();
 
-            user1.setLogin("test1");
-            user1.setPassword("test");
+            carBrand1.setName("Audi");
+            carBrand2.setName("BMW");
 
-            user2.setLogin("test2");
-            user2.setPassword("test");
+            carBrandRepository.save(carBrand1);
+            carBrandRepository.save(carBrand2);
 
-            userRepository.create(user1);
-            userRepository.create(user2);
+            car1.setCarBrand(carBrand1);
+            car2.setCarBrand(carBrand2);
 
-           car1.setBrand("Audi");
-           car2.setBrand("BMW");
+            carRepository.save(car1);
+            carRepository.save(car2);
 
-           carRepository.save(car1);
-           carRepository.save(car2);
+            post1.setCar(car1);
+            post2.setCar(car2);
 
-           post1.setDescription("test1");
-           post1.setUserId(user1.getId());
-           post1.setCreated(TIME_1);
-           post1.setCar(car1);
-
-           post2.setDescription("test2");
-           post2.setUserId(user2.getId());
-           post2.setCreated(TIME_2);
-           post2.setCar(car2);
-
-           postRepository.save(post1);
-           postRepository.save(post2);
-
-           assertThat(postRepository.findPostsByName("Audi")).isEqualTo(List.of(post1));
+            postRepository.save(post1);
+            postRepository.save(post2);
+            assertThat(postRepository.findPostsByBrand("Audi")).isEqualTo(List.of(post1));
     }
 
     @Test
@@ -248,33 +166,23 @@ class HbnPostRepositoryTest {
         userRepository.create(user1);
         userRepository.create(user2);
 
-        post1.setDescription("test1");
         post1.setUserId(user1.getId());
-        post1.setCreated(TIME_1);
-
-        post2.setDescription("test2");
         post2.setUserId(user2.getId());
-        post2.setCreated(TIME_2);
 
         postRepository.save(post1);
         postRepository.save(post2);
 
         List<Post> result = postRepository.findPostsOfUser(user1.getId());
-
         assertThat(result).isEqualTo(List.of(post1));
     }
 
     @Test
     void whenDontFindPostsOfUserThenGetEmptyList() {
         User user1 = new User();
-
         user1.setLogin("test1");
         user1.setPassword("test");
-
         userRepository.create(user1);
-
         List<Post> result = postRepository.findPostsOfUser(user1.getId());
-
         assertThat(result).isEqualTo(emptyList());
     }
 
@@ -287,5 +195,49 @@ class HbnPostRepositoryTest {
         Post changedPost = postRepository.findPostById(post.getId()).get();
         assertThat(isChanged).isTrue();
         assertThat(changedPost.getPrice()).isEqualTo(10);
+    }
+
+    @Test
+    void whenSearchingPostByPriceIntervalSuccessfullyThenGetList() {
+        int minPrice = 200000;
+        int maxPrice = 300000;
+        Post post = new Post();
+        post.setPrice(220000);
+        postRepository.save(post);
+        assertThat(postRepository.findPostByPriceInterval(minPrice, maxPrice)).isEqualTo(List.of(post));
+    }
+
+    @Test
+    void whenSearchingPostByPriceIntervalFailedThenGetEmptyList() {
+        int minPrice = 200000;
+        int maxPrice = 300000;
+        Post post = new Post();
+        post.setPrice(190000);
+        postRepository.save(post);
+        assertThat(postRepository.findPostByPriceInterval(minPrice, maxPrice)).isEqualTo(emptyList());
+    }
+
+    @Test
+    void whenSearchingPostByMileageIntervalThenGetList() {
+        long minMileage = 10000;
+        long maxMileage = 200000;
+        Post post1 = new Post();
+        Post post2 = new Post();
+        Car car1 = new Car();
+        Car car2 = new Car();
+
+        car1.setMileage(300000);
+        car2.setMileage(15000);
+
+        carRepository.save(car1);
+        carRepository.save(car2);
+
+        post1.setCar(car1);
+        post2.setCar(car2);
+
+        postRepository.save(post1);
+        postRepository.save(post2);
+
+        assertThat(postRepository.findPostByMileageInterval(minMileage, maxMileage)).isEqualTo(List.of(post2));
     }
 }

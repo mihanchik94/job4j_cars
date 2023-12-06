@@ -9,6 +9,11 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import ru.job4j.cars.model.Car;
+import ru.job4j.cars.model.CarBrand;
+import ru.job4j.cars.repository.car.CarRepository;
+import ru.job4j.cars.repository.car.HbnCarRepository;
+import ru.job4j.cars.repository.carBrand.CarBrandRepository;
+import ru.job4j.cars.repository.carBrand.HbnCarBrandRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,12 +24,14 @@ class HbnCarRepositoryTest {
     private static StandardServiceRegistry registry;
     private static SessionFactory sf;
     private static CarRepository carRepository;
+    private static CarBrandRepository carBrandRepository;
 
     @BeforeAll
     public static void initRepository() {
         registry = new StandardServiceRegistryBuilder().configure().build();
         sf = new MetadataSources().buildMetadata(registry).buildSessionFactory();
         carRepository = new HbnCarRepository(new CrudRepository(sf));
+        carBrandRepository = new HbnCarBrandRepository(new CrudRepository(sf));
     }
 
     @AfterEach
@@ -32,6 +39,11 @@ class HbnCarRepositoryTest {
         List<Car> cars = carRepository.findAll();
         for (Car car : cars) {
             carRepository.delete(car.getId());
+        }
+
+        List<CarBrand> carBrands = carBrandRepository.findAll();
+        for (CarBrand carBrand : carBrands) {
+            carBrandRepository.delete(carBrand.getId());
         }
     }
 
@@ -43,9 +55,7 @@ class HbnCarRepositoryTest {
     @Test
     void whenFindAllThenGetList() {
         Car car1 = new Car();
-        car1.setBrand("Voyah");
         Car car2 = new Car();
-        car2.setBrand("Jaguar");
         carRepository.save(car1);
         carRepository.save(car2);
 
@@ -55,15 +65,20 @@ class HbnCarRepositoryTest {
     @Test
     void whenFindByNameThenGetCar() {
         Car car = new Car();
-        car.setBrand("Voyah");
+        CarBrand carBrand = new CarBrand();
+
+        carBrand.setName("Voyah");
+        car.setCarBrand(carBrand);
+
+        carBrandRepository.save(carBrand);
         carRepository.save(car);
+
         assertThat(carRepository.findByName("Voyah")).isEqualTo(List.of(car));
     }
 
     @Test
     void whenSaveCarThenRepositoryHasTheSameCar() {
         Car car = new Car();
-        car.setBrand("Voyah");
         carRepository.save(car);
         Car result = carRepository.findById(car.getId()).get();
         assertThat(result).isEqualTo(car);
@@ -72,7 +87,6 @@ class HbnCarRepositoryTest {
     @Test
     void whenDeleteThenEmptyOptional() {
         Car car = new Car();
-        car.setBrand("Voyah");
         carRepository.save(car);
         int id = car.getId();
         carRepository.delete(id);
@@ -82,12 +96,23 @@ class HbnCarRepositoryTest {
     @Test
     void whenUpdateThenGetUpdatedObject() {
         Car car = new Car();
-        car.setBrand("Voyah");
+        CarBrand carBrand1 = new CarBrand();
+        CarBrand carBrand2 = new CarBrand();
+
+        carBrand1.setName("Voyah");
+        car.setCarBrand(carBrand1);
+
+        carBrandRepository.save(carBrand1);
         carRepository.save(car);
+
         Car updatedCar = new Car();
+        carBrand2.setName("Jaguar");
+
         updatedCar.setId(car.getId());
-        updatedCar.setBrand("Jaguar");
+
+        carBrandRepository.save(carBrand2);
         carRepository.update(updatedCar);
+
         assertThat(carRepository.findById(car.getId())).isEqualTo(Optional.of(updatedCar));
     }
 }

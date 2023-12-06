@@ -1,26 +1,38 @@
 package ru.job4j.cars.controller;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ru.job4j.cars.dto.FileDto;
-import ru.job4j.cars.model.Car;
-import ru.job4j.cars.model.Post;
-import ru.job4j.cars.model.User;
-import ru.job4j.cars.service.*;
+import ru.job4j.cars.model.*;
+import ru.job4j.cars.service.body.BodyService;
+import ru.job4j.cars.service.car.CarService;
+import ru.job4j.cars.service.carBrand.CarBrandService;
+import ru.job4j.cars.service.carModel.CarModelService;
+import ru.job4j.cars.service.color.ColorService;
+import ru.job4j.cars.service.driveType.DriveTypeService;
+import ru.job4j.cars.service.engine.EngineService;
+import ru.job4j.cars.service.fuelType.FuelTypeService;
+import ru.job4j.cars.service.gearBox.GearBoxService;
+import ru.job4j.cars.service.post.PostService;
 import ru.job4j.cars.utils.FileDtoConverter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
 @Controller
 @RequestMapping("/posts")
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class PostController {
@@ -39,6 +51,10 @@ public class PostController {
     private ColorService colorService;
     @Autowired
     private CarService carService;
+    @Autowired
+    private CarBrandService carBrandService;
+    @Autowired
+    private CarModelService carModelService;
 
     @Autowired
     public PostController(PostService postService) {
@@ -46,8 +62,36 @@ public class PostController {
     }
 
     @GetMapping("/all")
-    public String getAll(Model model) {
-        model.addAttribute("posts", postService.findAll());
+    public String getAll(Model model,
+                         @RequestParam(name = "carBrand", required = false) Integer carBrand,
+                         @RequestParam(name = "carModel", required = false) Integer carModel,
+                         @RequestParam(name = "mileageFrom", required = false) Long mileageFrom,
+                         @RequestParam(name = "mileageUntil", required = false) Long mileageUntil,
+                         @RequestParam(name = "priceFrom", required = false) Integer priceFrom,
+                         @RequestParam(name = "priceUntil", required = false) Integer priceUntil) {
+        model.addAttribute("brands", carBrandService.findAll());
+        model.addAttribute("models", carModelService.findAll());
+        model.addAttribute("enteredCarBrand", carBrand);
+        model.addAttribute("enteredCarModel", carModel);
+        model.addAttribute("enteredMileageFrom", mileageFrom);
+        model.addAttribute("enteredMileageUntil", mileageUntil);
+        model.addAttribute("enteredPriceFrom", priceFrom);
+        model.addAttribute("enteredPriceUntil", priceUntil);
+        List<Post> posts = postService.findAll();
+
+        if (carBrand != null) {
+            posts.retainAll(postService.findPostsByBrand(carBrandService.findById(carBrand).get().getName()));
+        }
+        if (carModel != null) {
+            posts.retainAll(postService.findPostsByModel(carModelService.findById(carModel).get().getName()));
+        }
+        if (mileageFrom != null || mileageUntil != null) {
+            posts.retainAll(postService.findPostByMileageInterval(mileageFrom, mileageUntil));
+        }
+        if (priceFrom != null || priceUntil != null) {
+            posts.retainAll(postService.findPostByPriceInterval(priceFrom, priceUntil));
+        }
+        model.addAttribute("posts", posts);
         return "posts/all";
     }
 
@@ -60,6 +104,8 @@ public class PostController {
         }
         model.addAttribute("post", optionalPost.get());
         model.addAttribute("car", optionalPost.get().getCar());
+        model.addAttribute("carBrand", optionalPost.get().getCar().getCarBrand());
+        model.addAttribute("carModel", optionalPost.get().getCar().getCarModel());
         model.addAttribute("body", optionalPost.get().getCar().getBody());
         model.addAttribute("gearBox", optionalPost.get().getCar().getGearBox());
         model.addAttribute("driveType", optionalPost.get().getCar().getDriveType());
@@ -71,6 +117,8 @@ public class PostController {
 
     @GetMapping("/addNewPost")
     public String getAddPostPage(Model model) {
+        model.addAttribute("brands", carBrandService.findAll());
+        model.addAttribute("models", carModelService.findAll());
         model.addAttribute("bodies", bodyService.findAll());
         model.addAttribute("gearBoxes", gearBoxService.findAll());
         model.addAttribute("driveTypes", driveTypeService.findAll());
@@ -114,8 +162,12 @@ public class PostController {
             return "redirect:/errors/404";
         }
         model.addAttribute("bodies", bodyService.findAll());
+        model.addAttribute("brands", carBrandService.findAll());
+        model.addAttribute("models", carModelService.findAll());
         model.addAttribute("post", optionalPost.get());
         model.addAttribute("car", optionalPost.get().getCar());
+        model.addAttribute("carBrand", optionalPost.get().getCar().getCarBrand());
+        model.addAttribute("carModel", optionalPost.get().getCar().getCarModel());
         model.addAttribute("gearBoxes", gearBoxService.findAll());
         model.addAttribute("driveTypes", driveTypeService.findAll());
         model.addAttribute("fuelTypes", fuelTypeService.findAll());

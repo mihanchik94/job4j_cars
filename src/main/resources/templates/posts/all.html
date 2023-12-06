@@ -7,8 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
             integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
@@ -33,18 +32,74 @@
                 </div>
             </div>
         </div>
-        <div class="d-flex" th:if="${user.login == 'Гость'}">
+        <div class="navbar-nav d-flex flex-row-reverse" th:if="${user.login == 'Гость'}">
             <a class="nav-link text-secondary me-3" th:href="@{/users/register}">Регистрация</a>
             <a class="nav-link text-secondary" th:href="@{/users/login}">Войти</a>
         </div>
-        <div class="d-flex" th:if="${user.login} != 'Гость'">
+        <div class="navbar-nav d-flex flex-row-reverse" th:if="${user.login} != 'Гость'">
             <a class="nav-link text-secondary me-3" href="#" th:text="${user.login}"></a>
             <a class="nav-link text-secondary" th:href="@{/users/logout}">Выйти</a>
         </div>
     </nav>
-    <div class="container">
-        <div class="row">
-            <table class="table">
+</div>
+<div class="container-fluid px-0 py-2" style="max-width:1600px">
+        <div>
+            <form th:action="@{/posts/all}">
+                <div class="p-3 d-flex flex-wrap">
+                    <div class="row pe-5">
+                        <!--Car Brand-->
+                        <div style="width:150px">
+                            <label for="carBrand">Брэнд:</label>
+                            <select class="form-control border border-secondary border-opacity-50" id="carBrand" name="carBrand">
+                                <option></option>
+                                <option th:each="carBrand : ${brands}" th:value="${carBrand.id}" th:text="${carBrand.name}"
+                                        th:selected="(${carBrand.id} == ${enteredCarBrand})"></option>
+                            </select>
+                        </div>
+                        <!--Car Model-->
+                        <div style="width:150px">
+                            <label for="carModel">Модель:</label>
+                            <select class="form-control border border-secondary border-opacity-50" id="carModel" name="carModel">
+                                <option></option>
+                                <option th:each="carModel : ${models}" th:value="${carModel.id}" th:class="${carModel.CarBrand.id}"
+                                        th:text="${carModel.name}" th:selected="(${carModel.id} == ${enteredCarModel})"></option>
+                            </select>
+                        </div>
+                        <!--Min mileage-->
+                        <div style="width:150px">
+                            <label for="mileageFrom">Пробег от (км):</label>
+                            <input type="text" class="form-control border border-secondary border-opacity-50"
+                                   id="mileageFrom" name="mileageFrom" th:value="${enteredMileageFrom}">
+                        </div>
+                        <!--Max mileage-->
+                        <div style="width:150px">
+                            <label for="mileageUntil">Пробег до (км):</label>
+                            <input type="text" class="form-control border border-secondary border-opacity-50"
+                                   id="mileageUntil" name="mileageUntil" th:value="${enteredMileageUntil}">
+                        </div>
+                    </div>
+                    <div class="row pe-5">
+                        <!--Min price-->
+                        <div style="width:150px">
+                            <label for="priceFrom">Цена от (руб):</label>
+                            <input type="text" class="form-control border border-secondary border-opacity-50"
+                                   id="priceFrom" name="priceFrom" th:value="${enteredPriceFrom}">
+                        </div>
+                        <!--Max price-->
+                        <div style="width:150px">
+                            <label for="priceUntil">Цена до (руб):</label>
+                            <input type="text" class="form-control border border-secondary border-opacity-50"
+                                   id="priceUntil" name="priceUntil" th:value="${enteredPriceUntil}">
+                        </div>
+                    </div>
+                    <div class="d-flex">
+                        <button type="submit" class="btn btn-primary align-bottom mt-4">Применить фильтр</button>
+                        <a class="btn btn-danger align-bottom mt-4 ms-2" role="button" th:href="@{/posts/all}">Очистить</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    <table class="table">
                 <thead>
                 <tr>
                     <th class="col-3 p-2">Фото объявления</th>
@@ -59,14 +114,14 @@
                 <tbody>
                 <tr th:each="post : ${posts}">
                     <td>
-                            <div class="mb-3">
-                                <img class="w-100" th:src="@{/files/{fileId}(fileId=${post.photos[0].id})}" alt="no image">
-                            </div>
+                        <div class="mb-3">
+                            <img class="w-100" th:src="@{/files/{fileId}(fileId=${post.photos[0].id})}" alt="no image">
+                        </div>
                     </td>
                     <td class="text-truncate p-2" style="max-width:75px;" th:text="${post.description}"></td>
                     <td class="p-2">
-                        <div th:text="${post.car.brand}"></div>
-                        <div th:text="${post.car.model}"></div>
+                        <div th:text="${post.car.carBrand.name}"></div>
+                        <div th:text="${post.car.carModel.name}"></div>
                     </td>
                     <td class="p-2" th:text="${post.car.year}"></td>
                     <td class="p-2" th:text="${post.car.mileage}"></td>
@@ -79,7 +134,13 @@
                 </tbody>
             </table>
         </div>
-    </div>
-</div>
+<script type="text/javascript">
+    $all_option = $("#carModel").html();
+    $("#carBrand").change(function() {
+        $("#carModel").html($all_option);
+        var val=$("#carBrand").find(":selected").val();
+        $("#carModel option[class!="+val+"]").remove();
+    })
+</script>
 </body>
 </html>

@@ -9,6 +9,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import ru.job4j.cars.model.FuelType;
+import ru.job4j.cars.repository.fuelType.FuelTypeRepository;
+import ru.job4j.cars.repository.fuelType.HbnFuelTypeRepository;
 
 import java.util.List;
 import java.util.Optional;

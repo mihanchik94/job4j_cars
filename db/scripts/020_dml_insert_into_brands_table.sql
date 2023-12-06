@@ -1,0 +1,10 @@
+insert into brands (name) values('Audi');
+insert into brands (name) values('BMW');
+insert into brands (name) values('Mercedes-Benz');
+insert into brands (name) values('Mazda');
+insert into brands (name) values('Hyundai');
+insert into brands (name) values('Kia');
+insert into brands (name) values('Land Rover');
+insert into brands (name) values('Jaguar');
+insert into brands (name) values('Mini');
+insert into brands (name) values('Genesis');

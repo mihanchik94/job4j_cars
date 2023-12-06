@@ -9,6 +9,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import ru.job4j.cars.model.User;
+import ru.job4j.cars.repository.user.HbnUserRepository;
+import ru.job4j.cars.repository.user.UserRepository;
 
 import static org.assertj.core.api.Assertions.*;
 

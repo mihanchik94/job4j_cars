@@ -7,8 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
             integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
@@ -33,11 +32,11 @@
                 </div>
             </div>
         </div>
-        <div class="d-flex" th:if="${user.login == 'Гость'}">
+        <div class="navbar-nav d-flex flex-row-reverse" th:if="${user.login == 'Гость'}">
             <a class="nav-link text-secondary me-3" th:href="@{/users/register}">Регистрация</a>
             <a class="nav-link text-secondary" th:href="@{/users/login}">Войти</a>
         </div>
-        <div class="d-flex" th:if="${user.login} != 'Гость'">
+        <div class="navbar-nav d-flex flex-row-reverse" th:if="${user.login} != 'Гость'">
             <a class="nav-link text-secondary me-3" href="#" th:text="${user.login}"></a>
             <a class="nav-link text-secondary" th:href="@{/users/logout}">Выйти</a>
         </div>
@@ -65,8 +64,8 @@
                     </td>
                     <td class="text-truncate p-2" style="max-width:75px;" th:text="${post.description}"></td>
                     <td class="p-2">
-                        <div th:text="${post.car.brand}"></div>
-                        <div th:text="${post.car.model}"></div>
+                        <div th:text="${post.car.carBrand.name}"></div>
+                        <div th:text="${post.car.carModel.name}"></div>
                     </td>
                     <td class="p-2" th:text="${post.car.year}"></td>
                     <td class="p-2" th:text="${post.car.mileage}"></td>

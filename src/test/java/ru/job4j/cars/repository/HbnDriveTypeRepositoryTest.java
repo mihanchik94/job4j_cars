@@ -8,10 +8,10 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import ru.job4j.cars.model.Car;
 import ru.job4j.cars.model.DriveType;
+import ru.job4j.cars.repository.driveType.DriveTypeRepository;
+import ru.job4j.cars.repository.driveType.HbnDriveTypeRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 

@@ -17,7 +17,6 @@
 
         <mapping class="ru.job4j.cars.model.User"/>
         <mapping class="ru.job4j.cars.model.Post"/>
-        <mapping class="ru.job4j.cars.model.PriceHistory"/>
         <mapping class="ru.job4j.cars.model.Car"/>
         <mapping class="ru.job4j.cars.model.Engine"/>
         <mapping class="ru.job4j.cars.model.File"/>
@@ -26,5 +25,7 @@
         <mapping class="ru.job4j.cars.model.DriveType"/>
         <mapping class="ru.job4j.cars.model.FuelType"/>
         <mapping class="ru.job4j.cars.model.GearBox"/>
+        <mapping class="ru.job4j.cars.model.CarBrand"/>
+        <mapping class="ru.job4j.cars.model.CarModel"/>
     </session-factory>
 </hibernate-configuration>

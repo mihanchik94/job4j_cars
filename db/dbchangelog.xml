@@ -21,5 +21,9 @@
     <include file="scripts/014_ddl_create_cars_table.sql" relativeToChangelogFile="true"/>
     <include file="scripts/015_ddl_create_auto_post_table.sql" relativeToChangelogFile="true"/>
     <include file="scripts/016_ddl_create_files_table.sql" relativeToChangelogFile="true"/>
-    <include file="scripts/017_ddl_create_price_history_table.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/017_ddl_create_brands_table.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/018_ddl_create_models_table.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/019_ddl_alter_cars_table.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/020_dml_insert_into_brands_table.sql" relativeToChangelogFile="true"/>
+    <include file="scripts/021_dml_insert_into_models_table.sql" relativeToChangelogFile="true"/>
 </databaseChangeLog>

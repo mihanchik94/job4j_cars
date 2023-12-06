@@ -9,6 +9,10 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import ru.job4j.cars.model.File;
 import ru.job4j.cars.model.Post;
+import ru.job4j.cars.repository.file.FileRepository;
+import ru.job4j.cars.repository.file.HbnFileRepository;
+import ru.job4j.cars.repository.post.HbnPostRepository;
+import ru.job4j.cars.repository.post.PostRepository;
 
 import java.util.List;
 import java.util.Optional;

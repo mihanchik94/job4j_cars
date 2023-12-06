@@ -16,8 +16,12 @@ public class Car {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String brand;
-    private String model;
+    @ManyToOne
+    @JoinColumn(name = "car_brand_id", foreignKey = @ForeignKey(name = "CAR_BRAND_FK"))
+    private CarBrand carBrand;
+    @ManyToOne
+    @JoinColumn(name = "car_model_id", foreignKey = @ForeignKey(name = "CAR_MODEL_FK"))
+    private CarModel carModel;
     @Column(name = "car_year")
     private int year;
     private long mileage;
